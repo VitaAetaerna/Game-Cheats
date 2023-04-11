@@ -8,5 +8,5 @@
 
 
    ****************************************************
-*****I assume no liability for any bans or legal charges!*****
+__***I assume no liability for any bans or legal charges!***__
    ****************************************************
