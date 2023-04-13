@@ -2,7 +2,21 @@
 import pymem
 import time
 import dearpygui.dearpygui as gui
+import keyboard
 import threading
+
+
+
+# AUFGABEN
+# BHOP FUNKTION TESTEN UND AUSBAUEN
+# VELOCITY CHANGER 
+# FLY
+# ESP
+# AIMBOT
+
+
+
+
 pm = pymem.Pymem("Csgo.exe")
 base = pymem.pymem.process.module_from_name(pm.process_handle, 'client.dll').lpBaseOfDll
 
@@ -14,7 +28,8 @@ m_iCrosshairId = 0x11838
 m_iTeamNum = 0xF4
 dwEntityList = 0x4DFFFC4
 dwForceAttack = 0x322DDFC
-m_vecVelocity = 0x114
+dwForceJump = 0x52BBD50
+m_flags = 0x104
 
 
 
@@ -42,15 +57,24 @@ def Triggerbot():
 
 def Bhop():
     while True:
-        LocalPlayer = pm.read_uint(base + dwLocalPlayer)
-        if not LocalPlayer: continue
-        if pm.read_uint(LocalPlayer + m_iHealth) <= 0: continue
+        if gui.get_value('BHOPState'):
+            LocalPlayer = pm.read_uint(base + dwLocalPlayer)
+            if not LocalPlayer: continue
+            if pm.read_uint(LocalPlayer + m_iHealth) <= 0: continue
 
-        Velocity = pm.read_uint(LocalPlayer +  m_vecVelocity)
+            Flag = pm.read_uint(LocalPlayer + m_flags)
 
-        if not Velocity == 0:
-            print(Velocity)
-            pm.write_uint(LocalPlayer + int(gui.get_value('VelocitySlider')), 4)
+
+            if keyboard.on_press('Space') and Flag == 256:
+                pm.write_uint(LocalPlayer, dwForceJump, 6)
+                print(Flag)
+            else:
+                print(Flag)
+            
+                
+
+
+
 
 gui.create_context()
 gui.create_viewport(title='Only use for experimental purposes', width=500, height=450)
