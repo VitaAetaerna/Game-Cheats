@@ -58,18 +58,11 @@ def Thread():
 
         #BHOP
         if gui.get_value('BHOPState'):
-            if not LocalPlayer: continue
-            if pm.read_uint(LocalPlayer + m_iHealth) <= 0: continue
-
-            Flag = pm.read_uint(LocalPlayer + m_flags)
-
-
-            if keyboard.on_press('Space') and Flag == 256:
-                pm.write_uint(LocalPlayer, dwForceJump, 6)
-                print(Flag)
-            else:
-                print(Flag)
-            
+            if pm.read_uint(LocalPlayer + m_flags) == 257:
+                if keyboard.is_pressed('space'):
+                    pm.write_int(base + dwForceJump, 6)
+                else:
+                    pm.write_int(base + dwForceJump, 4)
         # GODMODE
         if gui.get_value('GodmodeState'):
             if not LocalPlayer: continue
