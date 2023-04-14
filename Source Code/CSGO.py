@@ -36,6 +36,7 @@ m_flags = 0x104
 
 def Thread():
     while True:
+        # TRIGGERBOT
         if gui.get_value('TriggerBotState'):
             LocalPlayer = pm.read_uint(base + dwLocalPlayer)
             if not LocalPlayer: continue
@@ -54,8 +55,9 @@ def Thread():
                 time.sleep(gui.get_value('TriggerBotDelayAfter'))
 
 
+
+        #BHOP
         if gui.get_value('BHOPState'):
-            LocalPlayer = pm.read_uint(base + dwLocalPlayer)
             if not LocalPlayer: continue
             if pm.read_uint(LocalPlayer + m_iHealth) <= 0: continue
 
@@ -68,6 +70,15 @@ def Thread():
             else:
                 print(Flag)
             
+        # GODMODE
+        if gui.get_value('GodmodeState'):
+            if not LocalPlayer: continue
+            if pm.read_uint(LocalPlayer + m_iHealth) <= 0: continue
+
+            if pm.read_uint(LocalPlayer + m_iHealth) <= 99 and not pm.read_uint(LocalPlayer + m_iHealth) == 0: 
+                pm.write_uint(LocalPlayer + m_iHealth, 100)
+            else: continue
+        
                 
 
 
@@ -91,10 +102,12 @@ with gui.window(label='CSGO Cheat', width=500, height=450, no_title_bar=True, no
             
         with gui.tab(label='Vision'):
             gui.add_checkbox(label='Wallhack', tag='WallhackState')
+        
+        with gui.tab(label='Other'):
+            gui.add_checkbox(label='Godmode', tag='GodmodeState')
+
 
 threading.Thread(target=Thread).start()
-
-
 gui.show_viewport()
 gui.start_dearpygui()
 gui.destroy_context()
