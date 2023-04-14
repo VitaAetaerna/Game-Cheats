@@ -34,7 +34,7 @@ m_flags = 0x104
 
 
 
-def Triggerbot():
+def Thread():
     while True:
         if gui.get_value('TriggerBotState'):
             LocalPlayer = pm.read_uint(base + dwLocalPlayer)
@@ -54,9 +54,6 @@ def Triggerbot():
                 time.sleep(gui.get_value('TriggerBotDelayAfter'))
 
 
-
-def Bhop():
-    while True:
         if gui.get_value('BHOPState'):
             LocalPlayer = pm.read_uint(base + dwLocalPlayer)
             if not LocalPlayer: continue
@@ -91,11 +88,12 @@ with gui.window(label='CSGO Cheat', width=500, height=450, no_title_bar=True, no
 
         with gui.tab(label='Movement'):
             gui.add_checkbox(label='BHop', tag='BHOPState')
-            gui.add_checkbox(label='Velocity Changer', tag='Velocity')
-            gui.add_slider_float(label='Velocity', tag='VelocitySlider', min_value=0, max_value=2)
+            
+        with gui.tab(label='Vision'):
+            gui.add_checkbox(label='Wallhack', tag='WallhackState')
 
-threading.Thread(target=Triggerbot).start()
-threading.Thread(target=Bhop).start()
+threading.Thread(target=Thread).start()
+
 
 gui.show_viewport()
 gui.start_dearpygui()
